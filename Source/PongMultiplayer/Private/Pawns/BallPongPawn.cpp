@@ -2,7 +2,6 @@
 
 
 #include "Pawns/BallPongPawn.h"
-
 #include "Components/CapsuleComponent.h"
 
 ABallPongPawn::ABallPongPawn()
@@ -11,4 +10,5 @@ ABallPongPawn::ABallPongPawn()
 	ShapeComponent->SetupAttachment(RootComponent);
 
 	PawnMesh->SetupAttachment(RootComponent);
+	
 }

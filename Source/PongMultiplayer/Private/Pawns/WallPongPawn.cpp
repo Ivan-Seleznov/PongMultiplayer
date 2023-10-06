@@ -6,6 +6,7 @@
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Pawns/PongPlayerController.h"
 
 AWallPongPawn::AWallPongPawn()
 {
@@ -24,4 +25,9 @@ AWallPongPawn::AWallPongPawn()
 void AWallPongPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+	APongPlayerController* PongPlayerController = Cast<APongPlayerController>(GetController());
+	if (!PongPlayerController) return;
+
+	PongPlayerController->InitializePlayerInput(PlayerInputComponent);
 }

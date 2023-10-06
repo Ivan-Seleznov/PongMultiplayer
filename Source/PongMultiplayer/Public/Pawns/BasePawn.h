@@ -6,6 +6,8 @@
 #include "GameFramework/Pawn.h"
 #include "BasePawn.generated.h"
 
+class UFloatingPawnMovement;
+
 UCLASS(Abstract)
 class PONGMULTIPLAYER_API ABasePawn : public APawn
 {
@@ -21,4 +23,7 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStaticMeshComponent* PawnMesh;
+
+	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
+	UFloatingPawnMovement* PawnMovementComponent;
 };

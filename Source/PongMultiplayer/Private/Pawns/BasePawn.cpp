@@ -3,7 +3,10 @@
 
 #include "Pawns/BasePawn.h"
 
+#include "GameFramework/FloatingPawnMovement.h"
+
 ABasePawn::ABasePawn()
 {
 	PawnMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PawnMesh"));
+	PawnMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>("FloatingPawnMovementComponent");
 }
