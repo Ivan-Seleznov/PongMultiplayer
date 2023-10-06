@@ -3,6 +3,8 @@
 
 #include "Pawns/PongPlayerController.h"
 #include "EnhancedInputSubsystems.h"
+#include "Pawns/BasePawn.h"
+#include "Pawns/Components/PongMovementComponent.h"
 
 void APongPlayerController::InitializePlayerInput(UInputComponent* PlayerInputComponent)
 {
@@ -27,12 +29,24 @@ void APongPlayerController::InitializePlayerInput(UInputComponent* PlayerInputCo
 
 void APongPlayerController::Input_Move(const FInputActionValue& Value)
 {
-	APawn* PlayerPawn = GetPawn();
+	ABasePawn* PlayerPawn = Cast<ABasePawn>(GetPawn());
 	if (!PlayerPawn) return;
+
+	UPongMovementComponent* PlayerMovementComp = PlayerPawn->GetPongPawnMovementComponent();
+	if (!PlayerMovementComp) return;
 	
 	const FVector2D MovementVector = Value.Get<FVector2D>();
 	if (MovementVector.X != 0)
 	{
-		PlayerPawn->AddMovementInput(PlayerPawn->GetActorRightVector(), MovementVector.X);
+		//PlayerPawn->AddMovementInput(PlayerPawn->GetActorRightVector(), MovementVector.X);
+		PlayerMovementComp->MovePawn(PlayerPawn->GetActorRightVector(), MovementVector.X);
 	}
+}
+
+void APongPlayerController::Server_Move_Implementation(const FVector& TargetLocation)
+{
+	APawn* PlayerPawn = GetPawn();
+	if (!PlayerPawn) return;
+
+	PlayerPawn->SetActorLocation(TargetLocation);
 }

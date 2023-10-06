@@ -2,11 +2,13 @@
 
 
 #include "Pawns/BasePawn.h"
-
-#include "GameFramework/FloatingPawnMovement.h"
+#include "Pawns/Components/PongMovementComponent.h"
 
 ABasePawn::ABasePawn()
 {
 	PawnMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PawnMesh"));
-	PawnMovementComponent = CreateDefaultSubobject<UFloatingPawnMovement>("FloatingPawnMovementComponent");
+	PongMovementComponent = CreateDefaultSubobject<UPongMovementComponent>("PongMovementComponent");
+
+	PongMovementComponent->SetIsReplicated(true);
 }
+
