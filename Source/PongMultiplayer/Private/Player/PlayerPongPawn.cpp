@@ -6,6 +6,8 @@
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "GameModes/PongGameMode.h"
+#include "Kismet/GameplayStatics.h"
 #include "Player/PongPlayerController.h"
 #include "Player/Components/PongMovementComponent.h"
 

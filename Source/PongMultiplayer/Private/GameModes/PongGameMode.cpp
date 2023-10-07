@@ -7,7 +7,21 @@
 #include "GameFramework/PlayerStart.h"
 #include "GameModes/PongGameState.h"
 #include "Kismet/GameplayStatics.h"
+#include "Pawns/BallPongPawn.h"
 #include "Player/PlayerPongPawn.h"
+
+void APongGameMode::OnBallInGoal(int PlayerNumber)
+{
+	APongGameState* PongGameState = GetGameState<APongGameState>();
+	if (PongGameState)
+	{
+		PongGameState->IncrementScore(PlayerNumber);
+	}
+	if (BallPongPawn)
+	{
+		BallPongPawn->SetActorLocation(BallSpawnLocation);
+	}
+}
 
 void APongGameMode::PostLogin(APlayerController* NewPlayer)
 {
@@ -21,6 +35,7 @@ void APongGameMode::PostLogin(APlayerController* NewPlayer)
 	{
 		StartGame();
 	}
+	
 }
 
 void APongGameMode::BeginPlay()
@@ -29,6 +44,7 @@ void APongGameMode::BeginPlay()
 
 	BallSpawnLocation = GetBallSpawnPointLocation();
 	SetPlayerStarts();
+	
 }
 
 void APongGameMode::StartGame()
@@ -38,18 +54,24 @@ void APongGameMode::StartGame()
 		UE_LOG(LogTemp,Fatal,TEXT("Player start is less than max players count"))
 	}
 
-
 	for (int i = 0; i < ConnectedControllers.Num(); i++)
 	{
 		APlayerPongPawn* PongPaw = GetWorld()->SpawnActor<APlayerPongPawn>(PlayerPawnClass,PlayerStarts[i]->GetActorLocation(),PlayerStarts[i]->GetActorRotation());
 		ConnectedControllers[i]->Possess(PongPaw);
 	}
 
+	SpawnBall();
+	
 	APongGameState* PongGameState = GetGameState<APongGameState>();
 	if (PongGameState)
 	{
 		PongGameState->OnAllPlayersConnected();
 	}
+}
+
+void APongGameMode::SpawnBall()
+{
+	BallPongPawn = GetWorld()->SpawnActor<ABallPongPawn>(BallPawnClass,BallSpawnLocation,FRotator::ZeroRotator);
 }
 
 void APongGameMode::SetPlayerStarts()

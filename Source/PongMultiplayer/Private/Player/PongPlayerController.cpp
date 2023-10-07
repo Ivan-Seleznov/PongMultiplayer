@@ -26,6 +26,16 @@ void APongPlayerController::InitializePlayerInput(UInputComponent* PlayerInputCo
 	EnhancedInputComponent->BindAction(MoveInputAction,ETriggerEvent::Triggered,this,&ThisClass::Input_Move);
 }
 
+void APongPlayerController::OnAllPlayersConnected()
+{
+	Client_OnAllPlayersConnected();
+}
+
+void APongPlayerController::Client_OnAllPlayersConnected_Implementation()
+{
+	AllPlayersConnectedClient.Broadcast();	
+}
+
 void APongPlayerController::Input_Move(const FInputActionValue& Value)
 {
 	ABasePawn* PlayerPawn = Cast<ABasePawn>(GetPawn());

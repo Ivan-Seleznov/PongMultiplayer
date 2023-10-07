@@ -6,6 +6,7 @@
 #include "GameFramework/GameMode.h"
 #include "PongGameMode.generated.h"
 
+class ABallPongPawn;
 class APlayerPongPawn;
 class APlayerStart;
 class ABaseCharacter;
@@ -19,6 +20,8 @@ class PONGMULTIPLAYER_API APongGameMode : public AGameMode
 public:
 	const FVector& GetBallSpawnLocation() const {return BallSpawnLocation;}
 
+	void OnBallInGoal(int PlayerNumber);
+	
 	void PostLogin(APlayerController* NewPlayer) override;
 protected:
 	virtual void BeginPlay() override;
@@ -36,11 +39,17 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Classes")
 	TSubclassOf<APlayerPongPawn> PlayerPawnClass;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Classes")
+	TSubclassOf<ABallPongPawn> BallPawnClass;
 	
 	TArray<APlayerController*> ConnectedControllers;
 
 	void StartGame();
+	void SpawnBall();
 private:
 	void SetPlayerStarts();
 	FVector GetBallSpawnPointLocation() const;
+
+	ABallPongPawn* BallPongPawn;
 };

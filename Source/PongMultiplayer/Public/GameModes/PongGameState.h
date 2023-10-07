@@ -7,8 +7,7 @@
 #include "PongGameState.generated.h"
 
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FAllPlayersConnected);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPlayerScoreChanged,int,NewPlayerScore);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FPlayerScoreChanged);
 
 /**
  * Pong GameState class. Contains players score
@@ -19,30 +18,25 @@ class PONGMULTIPLAYER_API APongGameState : public AGameState
 	GENERATED_BODY()
 
 public:
-	FAllPlayersConnected OnAllPlayersConnectedDelegate;
-
-	FPlayerScoreChanged OnPlayerOneScoreChanged;
-	FPlayerScoreChanged OnPlayerTwoScoreChanged;
-
     void OnAllPlayersConnected();
 
 	void IncrementScore(int PlayerNumber);
+
+	bool IsAllPlayersConnected() const {return bAllPlayersConnected;}
 	
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	int GetPlayerOneScore() const {return PlayerOneScore;}
+	int GetPlayerTwoScore() const {return PlayerTwoScore;}
+
 protected:
-	UFUNCTION(Reliable,Client)
-	void Client_OnAllPlayersConnected();
-
-	UFUNCTION()
-	void OnRep_PlayerOneScore();
-
-	UFUNCTION()
-	void OnRep_PlayerTwoScore();
 	
-	UPROPERTY(Replicated, ReplicatedUsing = OnRep_PlayerOneScore, EditAnywhere, BlueprintReadWrite, Category = "Score")
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Score")
 	int PlayerOneScore;
 
-	UPROPERTY(Replicated,ReplicatedUsing = OnRep_PlayerTwoScore, EditAnywhere, BlueprintReadWrite, Category = "Score")
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Score")
 	int PlayerTwoScore;
 
-	
+	UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = "Score")
+	bool bAllPlayersConnected;
 };

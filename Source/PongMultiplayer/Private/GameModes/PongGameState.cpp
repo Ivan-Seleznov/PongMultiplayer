@@ -3,15 +3,15 @@
 
 #include "GameModes/PongGameState.h"
 
+#include "Net/UnrealNetwork.h"
+
 void APongGameState::OnAllPlayersConnected()
 {
-	Client_OnAllPlayersConnected();
+	bAllPlayersConnected = true;
 }
 
 void APongGameState::IncrementScore(int PlayerNumber)
 {
-	if (!HasAuthority()) return;
-	
 	if (PlayerNumber == 1)
 	{
 		PlayerOneScore++;
@@ -22,17 +22,11 @@ void APongGameState::IncrementScore(int PlayerNumber)
 	}
 }
 
-void APongGameState::OnRep_PlayerOneScore()
+void APongGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
-	OnPlayerOneScoreChanged.Broadcast(PlayerOneScore);
-}
-
-void APongGameState::OnRep_PlayerTwoScore()
-{
-	OnPlayerOneScoreChanged.Broadcast(PlayerTwoScore);
-}
-
-void APongGameState::Client_OnAllPlayersConnected_Implementation()
-{
-	OnAllPlayersConnectedDelegate.Broadcast();
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	
+	DOREPLIFETIME(ThisClass,PlayerOneScore);
+	DOREPLIFETIME(ThisClass,PlayerTwoScore);
+	DOREPLIFETIME(ThisClass,bAllPlayersConnected);
 }

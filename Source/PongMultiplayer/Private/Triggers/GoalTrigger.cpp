@@ -3,6 +3,9 @@
 
 #include "Triggers/GoalTrigger.h"
 
+#include "GameModes/PongGameMode.h"
+#include "GameModes/PongGameState.h"
+#include "Kismet/GameplayStatics.h"
 #include "Pawns/BallPongPawn.h"
 
 AGoalTrigger::AGoalTrigger()
@@ -14,6 +17,12 @@ void AGoalTrigger::OnBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
 	if (ABallPongPawn* BallPawn = Cast<ABallPongPawn>(OtherActor))
 	{
-		BallPawn->SetActorLocation(BallPawn->GetBallSpawnLocation());
+		if (HasAuthority())
+		{
+			APongGameMode* PongGameMode = Cast<APongGameMode>(UGameplayStatics::GetGameMode(this));
+			if (!PongGameMode) return;
+
+			PongGameMode->OnBallInGoal(PlayerNumber);
+		}
 	}
 }
