@@ -40,6 +40,8 @@ void ABallPongPawn::BeginPlay()
 	
 	if (HasAuthority())
 	{
+		BallSpawnLocation = GetActorLocation();
+		
 		int32 RandomX = FMath::RandRange(0, 1);
 		int32 RandomY = FMath::RandRange(0, 1);
 
@@ -53,5 +55,6 @@ void ABallPongPawn::OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherAc
 	if (HasAuthority())
 	{
 		BallVelocity = UKismetMathLibrary::GetReflectionVector(BallVelocity, Hit.ImpactNormal);
+		BallVelocity.Z = 0;
 	}
 }

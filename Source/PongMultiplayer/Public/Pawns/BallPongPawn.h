@@ -13,18 +13,25 @@ UCLASS()
 class PONGMULTIPLAYER_API ABallPongPawn : public ABasePawn
 {
 	GENERATED_BODY()
+
 public:
 	ABallPongPawn();
+	
 	virtual void Tick(float DeltaSeconds) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
+	const FVector& GetBallSpawnLocation() const {return BallSpawnLocation;}
+	
 protected:
 	UPROPERTY(Replicated,VisibleAnywhere,BlueprintReadOnly)
 	FVector BallVelocity;
 
 	UPROPERTY(Replicated,EditDefaultsOnly,BlueprintReadOnly)
 	float BallSpeed = 500.f;
+
+	
+	UPROPERTY() FVector BallSpawnLocation;
 	
 	virtual void BeginPlay() override;
 
