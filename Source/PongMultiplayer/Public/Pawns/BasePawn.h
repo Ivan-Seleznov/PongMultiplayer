@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Components/PongMovementComponent.h"
 #include "GameFramework/Pawn.h"
 #include "BasePawn.generated.h"
 
@@ -17,12 +16,9 @@ class PONGMULTIPLAYER_API ABasePawn : public APawn
 	
 public:
 	ABasePawn();
-
-
-	FORCEINLINE UPongMovementComponent* GetPongPawnMovementComponent() const {return PongMovementComponent;}
 	
-	UFUNCTION(BlueprintCallable)
-	void SetPawnSpeed(float NewSpeed) {PongMovementComponent->SetSpeed(NewSpeed);}
+	FORCEINLINE UShapeComponent* GetShapeComponent() const {return ShapeComponent;}
+	
 protected:
 	
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Components")
@@ -30,7 +26,4 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UStaticMeshComponent* PawnMesh;
-
-	UPROPERTY(VisibleAnywhere,BlueprintReadOnly,Category="Components")
-	UPongMovementComponent* PongMovementComponent;
 };

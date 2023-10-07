@@ -25,7 +25,4 @@ protected:
 	UInputAction* MoveInputAction;
 
 	void Input_Move(const FInputActionValue& Value);
-
-	UFUNCTION(Reliable,Server)
-	void Server_Move(const FVector& TargetLocation);
 };

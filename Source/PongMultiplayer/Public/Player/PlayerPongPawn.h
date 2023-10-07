@@ -4,19 +4,21 @@
 
 #include "CoreMinimal.h"
 #include "Pawns/BasePawn.h"
-#include "WallPongPawn.generated.h"
+#include "PlayerPongPawn.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
 /**
- * 
+ * Player pawn class
  */
 UCLASS()
-class PONGMULTIPLAYER_API AWallPongPawn : public ABasePawn
+class PONGMULTIPLAYER_API APlayerPongPawn : public ABasePawn
 {
 	GENERATED_BODY()
 public:
-	AWallPongPawn();
+	APlayerPongPawn();
+	
+	virtual UPawnMovementComponent* GetMovementComponent() const override;
 	
 protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Components")
@@ -24,6 +26,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Components")
 	UCameraComponent* CameraComponent;
+
+	UPROPERTY(EditDefaultsOnly,BlueprintReadOnly,Category="Components")
+	UPongMovementComponent* PongMovementComponent;
 	
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };

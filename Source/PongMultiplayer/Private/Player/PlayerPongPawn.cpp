@@ -1,14 +1,15 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Pawns/WallPongPawn.h"
+#include "Player/PlayerPongPawn.h"
 
 #include "Camera/CameraComponent.h"
 #include "Components/BoxComponent.h"
 #include "GameFramework/SpringArmComponent.h"
-#include "Pawns/PongPlayerController.h"
+#include "Player/PongPlayerController.h"
+#include "Player/Components/PongMovementComponent.h"
 
-AWallPongPawn::AWallPongPawn()
+APlayerPongPawn::APlayerPongPawn()
 {
 	ShapeComponent = CreateDefaultSubobject<UBoxComponent>("Box Collision");
 	RootComponent = ShapeComponent;
@@ -20,9 +21,16 @@ AWallPongPawn::AWallPongPawn()
 	
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("Camera Component");
 	CameraComponent->SetupAttachment(SpringArmComponent);
+
+	PongMovementComponent = CreateDefaultSubobject<UPongMovementComponent>("Pong Movement Component");
 }
 
-void AWallPongPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+UPawnMovementComponent* APlayerPongPawn::GetMovementComponent() const
+{
+	return PongMovementComponent;
+}
+
+void APlayerPongPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 

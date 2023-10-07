@@ -15,4 +15,19 @@ class PONGMULTIPLAYER_API ABallPongPawn : public ABasePawn
 	GENERATED_BODY()
 public:
 	ABallPongPawn();
+	virtual void Tick(float DeltaSeconds) override;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+protected:
+	UPROPERTY(Replicated,VisibleAnywhere,BlueprintReadOnly)
+	FVector BallVelocity;
+
+	UPROPERTY(Replicated,EditDefaultsOnly,BlueprintReadOnly)
+	float BallSpeed = 500.f;
+	
+	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	virtual void OnBallHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };

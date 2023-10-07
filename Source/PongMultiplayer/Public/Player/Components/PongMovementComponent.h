@@ -13,12 +13,11 @@ struct FPawnSavedMove
 	GENERATED_BODY()
 
 	FPawnSavedMove();
-	FPawnSavedMove(FVector PawnClientLoc,FVector Direction,float Delta,float Value);
-	
-	UPROPERTY() FVector WorldDirection;
+	FPawnSavedMove(FVector PawnLoc,FVector Acceleration,float Delta);
+
+	UPROPERTY() FVector PawnLoc;
+	UPROPERTY() FVector ControlAcceleration;
 	UPROPERTY() float DeltaTime;
-	UPROPERTY() float ScaleValue;
-	UPROPERTY() FVector PawnDeltaLoc;
 };
 
 class ABasePawn;
@@ -31,13 +30,12 @@ class PONGMULTIPLAYER_API UPongMovementComponent : public UPawnMovementComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
 	UPongMovementComponent();
 
 	virtual void InitializeComponent() override;
 
 	//Call on client
-	void MovePawn(const FVector& WorldDirection,float ScaleValue);
+	void MovePawn(const FVector& ControlAcceleration, float DeltaTime);
 
 	UFUNCTION(Unreliable,Server)
 	void Server_MovePawn(const FPawnSavedMove& PawnSavedMove);
@@ -46,16 +44,14 @@ public:
 	void Client_CorrectPawnMove(const FVector& NewPawnLoc);
 	
 	virtual void SetSpeed(float NewSpeed);
-	
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
 
+protected:
 	UPROPERTY(EditDefaultsOnly,BlueprintReadWrite,Replicated)
 	float PawnSpeed = 1300.f;
 	
 	UPROPERTY(Transient,BlueprintReadOnly)
 	ABasePawn* BasePawnOwner;
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
